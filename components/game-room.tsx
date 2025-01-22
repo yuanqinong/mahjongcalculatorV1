@@ -20,6 +20,12 @@ export function GameRoom({ roomId }: GameRoomProps) {
   }, [roomId])
 
   const handlePointsChange = (id: number, points: number) => {
+    // Validate points is a valid number
+    if (isNaN(points)) {
+      points = 0
+    }
+    // Ensure points is within valid range
+    points = Math.max(-100000, Math.min(points, 100000))
     setPlayers(players.map((player) => (player.id === id ? { ...player, points } : player)))
   }
 
@@ -86,22 +92,22 @@ export function GameRoom({ roomId }: GameRoomProps) {
               id={`player-${player.id}`}
               type="number"
               min="-100000"
+              max="100000"
               value={player.points}
               onChange={(e) => {
-                // Handle as string first to allow typing negative numbers
                 const inputValue = e.target.value
-                // Convert to number only when calculating
-                const value = inputValue ? Number(inputValue) : 0
+                // Handle empty input case
+                const value = inputValue === '' ? 0 : Number(inputValue)
                 handlePointsChange(player.id, value)
               }}
-              // Allow typing negative sign
               onKeyDown={(e) => {
+                // Allow typing minus sign anywhere in the input
                 if (e.key === '-') {
                   e.preventDefault()
                   const input = e.target as HTMLInputElement
-                  if (!input.value.includes('-')) {
-                    handlePointsChange(player.id, -Math.abs(Number(input.value || 0)))
-                  }
+                  const currentValue = Number(input.value || 0)
+                  // Toggle between positive and negative
+                  handlePointsChange(player.id, currentValue * -1)
                 }
               }}
             />
@@ -112,7 +118,9 @@ export function GameRoom({ roomId }: GameRoomProps) {
             Calculate Results
           </Button>
           <Button 
-            onClick={() => players.forEach(p => handlePointsChange(p.id, 25000))}
+            onClick={() => {
+              setPlayers(players.map(p => ({ ...p, points: 25000 })))
+            }}
             variant="outline"
           >
             Reset Points
