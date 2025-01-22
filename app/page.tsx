@@ -9,9 +9,7 @@ export default function MahjongCalculator() {
 
   return (
     <div className="container mx-auto p-4">
-      <nav className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Mahjong Calculator</h1>
-      </nav>
+      <h1 className="text-3xl font-bold text-center mb-10">Mahjong Calculator</h1>
       {!roomId ? <RoomCard onRoomJoin={setRoomId} /> : <GameRoom roomId={roomId} />}
     </div>
   )

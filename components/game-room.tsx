@@ -88,7 +88,7 @@ export function GameRoom({ roomId }: GameRoomProps) {
               min="-100000"
               value={player.points}
               onChange={(e) => {
-                const value = e.target.value === '' ? 0 : parseInt(e.target.value)
+                const value = e.target.value ? Number(e.target.value) : 0
                 handlePointsChange(player.id, value)
               }}
             />
