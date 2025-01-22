@@ -93,20 +93,17 @@ export function GameRoom({ roomId }: GameRoomProps) {
               type="number"
               min="-100000"
               max="100000"
-              value={player.points}
+              value={player.points === 0 ? '' : player.points}
               onChange={(e) => {
                 const inputValue = e.target.value
-                // Handle empty input case
                 const value = inputValue === '' ? 0 : Number(inputValue)
                 handlePointsChange(player.id, value)
               }}
               onKeyDown={(e) => {
-                // Allow typing minus sign anywhere in the input
                 if (e.key === '-') {
                   e.preventDefault()
                   const input = e.target as HTMLInputElement
                   const currentValue = Number(input.value || 0)
-                  // Toggle between positive and negative
                   handlePointsChange(player.id, currentValue * -1)
                 }
               }}
